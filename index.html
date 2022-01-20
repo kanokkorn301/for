@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Form Register</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-xs-12" id="app">
+
+                <form name="register" action="register_db.php" method="POST" id="register" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-2"> </div>
+                        <div class="col-sm-5" align="left">
+                            <br>
+                            <h4> ข้อมูลนักศึกษา </h4>
+                        </div>
+                        <input name="Admin_level" type="hidden" id="Admin_level" value="2" />
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2" align="right"> Stu : </div>
+                        <div class="col-sm-5" align="left">
+                            <input v-model="student.stu" name="Admin_Stu" type="text" required class="form-control" id="Admin_Stu" placeholder="รหัสนักศึกษา" pattern="^[0-9]+$" title="ตัวเลขเท่านั้น" minlength="2" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2" align="right"> Firstname: </div>
+                        <div class="col-sm-5" align="left">
+                            <input v-model="student.firstname" name="Admin_Firstname" type="Firstname" required class="form-control" id="Admin_Firstname" placeholder="ชื่อ" pattern="^[a-zA-Z]+$" title="ตัวอักษรเท่านั้น" minlength="2" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2" align="right"> Lastname : </div>
+                        <div class="col-sm-6" align="left">
+                            <input v-model="student.lastname" name="Admin_Lastname" type="text" required class="form-control" id="Admin_Lastname" placeholder="นามสกุล" pattern="^[a-zA-Z]+$" title="ตัวอักษรเท่านั้น" minlength="2" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2" align="right"> Email : </div>
+                        <div class="col-sm-6" align="left">
+                            <input v-model="student.email" name="Admin_email" type="email" class="form-control" id="Admin_email" placeholder="อีเมล์" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2" align="right"> GPA : </div>
+                        <div class="col-sm-6" align="left">
+                            <input v-model="student.gpa" name="Admin_GPA" type="text" class="form-control" id="Admin_GPA" placeholder="เกรดเฉลี่ย" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2"> </div>
+                        <div class="col-sm-6">
+                            <button @click="Add()" type="submit" class="btn btn-primary" id="btn">  submit  </button>
+                        </div>
+                </form>
+                <div class="data">
+                    <table class="table">
+                        <tr>
+                            <th>Stu</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>GPA</th>
+                            <th>Delete</th>
+                        </tr>
+                        <tr v-for="(item,index) in studentdata" v-if="item.gpa<2.00" :style="{color:'red','font-weight':'bold'}">
+                            <td> {{item.stu}} </td>
+                            <td>{{item.firstname}}</td>
+                            <td>{{item.lastname}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.gpa}}</td>
+                            <th><button @click="Del(index)">delete</button></th>
+                        </tr>
+                        <tr v-for="(item,index) in studentdata" v-if="item.gpa>2.00">
+                            <td> {{item.stu}} </td>
+                            <td>{{item.firstname}}</td>
+                            <td>{{item.lastname}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.gpa}}</td>
+                            <th><button @click="Del(index)">delete</button></th>
+                        </tr>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            student: {
+                stu: '',
+                firstname: '',
+                lastname: '',
+                email: '',
+                gpa: ''
+            },
+            studentdata: [{
+                stu: '43756',
+                firstname: 'afnsdjf',
+                lastname: 'davnad',
+                email: 'avv@gmail.com',
+                gpa: '0.00'
+            }, {
+                stu: '43756',
+                firstname: 'afnsdjf1',
+                lastname: 'davnad1',
+                email: 'avv@gmail.com',
+                gpa: '9.53'
+            }, {
+                stu: '43756',
+                firstname: 'afnsdjf2',
+                lastname: 'davnad2',
+                email: 'avv@gmail.com',
+                gpa: '6.28'
+            }, ]
+        },
+        methods: {
+            Add: function() {
+                this.studentdata.push({
+                    stu: this.student.stu,
+                    firstname: this.student.firstname,
+                    lastname: this.student.lastname,
+                    email: this.student.email,
+                    gpa: this.student.gpa
+                })
+                this.student.stu = '',
+                    this.student.firstname = '',
+                    this.student.lastname = '',
+                    this.student.email = '',
+                    this.student.gpa = ''
+            },
+            Del: function(k) {
+                this.studentdata.splice(k, 1);
+            }
+        }
+    })
+</script>
